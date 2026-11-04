@@ -1,0 +1,28 @@
+[Unit]
+Description=KDE Connect opaque cloud relay
+After=network.target
+
+[Service]
+User=kdeconnect-relay
+Group=kdeconnect-relay
+StateDirectory=kdeconnect-cloud-relay
+StateDirectoryMode=0700
+EnvironmentFile=/etc/kdeconnect-cloud-relay/relay.env
+# The environment file must set RELAY_SERVER_NAME to the certificate-covered domain.
+Environment=RELAY_STATE_DIR=/var/lib/kdeconnect-cloud-relay
+ExecStart=/usr/local/bin/kdeconnect-cloud-relay serve
+Restart=on-failure
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+CapabilityBoundingSet=
+MemoryMax=768M
+TasksMax=128
+LimitNOFILE=4096
+
+[Install]
+WantedBy=multi-user.target

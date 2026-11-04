@@ -1,0 +1,41 @@
+[package]
+name = "kdeconnect-cloud-relay"
+version = "0.1.0"
+edition = "2024"
+license = "GNU-GPLv3.0-or-later"
+description = "Cloud relay server for KDEConnect"
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.8", features = ["ws"] }
+bytes = "1"
+clap = { version = "4", features = ["derive"] }
+fs2 = "0.4"
+futures-util = { version = "0.3", features = ["sink"] }
+hyper = { version = "1", features = ["server", "http1"] }
+hyper-util = { version = "0.1", features = ["server-auto", "tokio", "service"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+rustls-native-certs = "0.8"
+rustls-pemfile = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+sqlx = { version = "0.9", default-features = false, features = ["runtime-tokio", "sqlite", "migrate", "macros", "uuid"] }
+time = { version = "0.3", features = ["formatting", "parsing", "serde"] }
+tokio = { version = "1", features = ["full", "test-util"] }
+tokio-rustls = { version = "0.26", default-features = false, features = ["ring", "tls12"] }
+tokio-util = { version = "0.7", features = ["rt"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+x509-parser = { version = "0.18", features = ["verify"] }
+
+[dev-dependencies]
+proptest = "1"
+rcgen = { version = "0.14", features = ["pem", "x509-parser"] }
+tempfile = "3"
+tokio-tungstenite = { version = "0.30", features = ["rustls-tls-native-roots"] }
+
+[[bin]]
+name = "kdeconnect-cloud-relay"
+path = "src/main.rs"

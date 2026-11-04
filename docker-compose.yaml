@@ -1,0 +1,22 @@
+services:
+  relay:
+    build: .
+    restart: unless-stopped
+    environment:
+      RELAY_BIND: 0.0.0.0:8443
+      RELAY_SERVER_NAME: ${RELAY_SERVER_NAME:?Set RELAY_SERVER_NAME to the certificate-covered relay domain}
+      RELAY_STATE_DIR: /var/lib/kdeconnect-cloud-relay
+      RELAY_TLS_CERT_CHAIN_FILE: /run/relay-tls/fullchain.pem
+      RELAY_TLS_PRIVATE_KEY_FILE: /run/relay-tls/privkey.pem
+      RELAY_CLIENT_CA_MODE: provided
+      RELAY_CLIENT_CA_FILE: /run/relay-tls/client-ca.pem
+      RELAY_MAX_CONNECTIONS: "256"
+      RELAY_MAX_HANDSHAKES: "32"
+    volumes:
+      - state:/var/lib/kdeconnect-cloud-relay
+      - ./tls:/run/relay-tls:ro
+    read_only: true
+    tmpfs:
+      - /tmp:size=16m,noexec,nosuid,nodev,mode=1777
+volumes:
+  state:
